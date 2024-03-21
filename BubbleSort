@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bubble Sort Visualizer</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+    
+    #container {
+        display: flex;
+        align-items: flex-end;
+        width: 80%;
+        height: 400px;
+        border: 1px solid #ccc;
+    }
+    
+    .bar {
+        width: 20px;
+        margin: 0 1px;
+        background-color: dodgerblue;
+        transition: height 0.2s;
+    }
+</style>
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+    // Function to create a random array of given size
+    function createRandomArray(size) {
+        const array = [];
+        for (let i = 0; i < size; i++) {
+            array.push(Math.floor(Math.random() * 300) + 10);
+        }
+        return array;
+    }
+
+    // Function to display the bars representing the array
+    function displayBars(array) {
+        const container = document.getElementById('container');
+        container.innerHTML = '';
+        for (let i = 0; i < array.length; i++) {
+            const bar = document.createElement('div');
+            bar.classList.add('bar');
+            bar.style.height = `${array[i]}px`;
+            container.appendChild(bar);
+        }
+    }
+
+    // Bubble sort algorithm
+    async function bubbleSort(array) {
+        let n = array.length;
+        let swapped;
+        do {
+            swapped = false;
+            for (let i = 0; i < n - 1; i++) {
+                if (array[i] > array[i + 1]) {
+                    await swap(array, i, i + 1);
+                    swapped = true;
+                }
+            }
+            n--;
+        } while (swapped);
+    }
+
+    // Function to swap two elements in the array
+    async function swap(array, i, j) {
+        await sleep(100); // Add a delay for visualization
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        displayBars(array);
+    }
+
+    // Function to create a delay
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Main function
+    async function main() {
+        const size = 30; // Change this to change the size of the array
+        const array = createRandomArray(size);
+        displayBars(array);
+        await bubbleSort(array);
+    }
+
+    // Start the visualization
+    main();
+</script>
+</body>
+</html>
