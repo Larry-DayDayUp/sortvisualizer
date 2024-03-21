@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>插入排序演示</title>
+    <style>
+        .number-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .number-list li {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .highlight {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h2>插入排序演示</h2>
+<ul id="numberList" class="number-list">
+    <!-- 数字列表将通过 JavaScript 动态填充 -->
+</ul>
+
+<script>
+    // 插入排序算法
+    function insertionSort(arr, callback) {
+        for (let i = 1; i < arr.length; i++) {
+            let key = arr[i];
+            let j = i - 1;
+
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j = j - 1;
+            }
+            arr[j + 1] = key;
+            if (callback) callback(arr, i, j + 1);
+        }
+    }
+
+    // 更新页面上的数字列表
+    function updateList(arr, current, highlight) {
+        const list = document.getElementById('numberList');
+        list.innerHTML = ''; // 清空列表
+
+        arr.forEach((value, index) => {
+            const li = document.createElement('li');
+            li.textContent = value;
+            if (index === current || index === highlight) {
+                li.classList.add('highlight');
+            }
+            list.appendChild(li);
+        });
+    }
+
+    // 生成随机数组并排序
+    function generateAndSort() {
+        const arr = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+        updateList(arr);
+        insertionSort(arr, updateList);
+    }
+
+    generateAndSort();
+</script>
+</body>
+</html>
